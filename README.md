@@ -2,14 +2,14 @@
 Remote-Kit is a OpenWRT based custom firmware designed for the **GL-MT300N-V2** pocket router, specifically tailored to support a variety of tools and utilities aimed at facilitating **remote hardware bring-up, debugging, and testing activities**. This setup offers an array of remote control capabilities, including:
 
 1. Serial terminal access to the Device-Under-Test (DUT) using the ```screen``` command on **Remote-Kit** pocket-router.
+1. Provision of a virtual microSD card using [**SDWire**](https://shop.3mdeb.com/shop/open-source-hardware/sdwire/) sdcard-mux for trying out different sdcard-images on the DUT without having to manually prepare bootable sdcards.
 1. Ability to virtually unplug and re-plug USB accessories connected to your DUT(using Tasmota based [**XY-WFUSB**](https://templates.blakadder.com/sinilink_XY-WFUSB.html) dongle).
 1. Capability to simulate Ethernet cable plug/unplug events for the DUT(using GS308EP PoE switch's api function via [**ntgrrc**](https://github.com/nitram509/ntgrrc) utility).
 1. Utilization of [**PiKVM**](https://pikvm.org/) to remotely view and interact with your target hw using its HDMI-Output and USB Input(keyboard/mouse emulation).
 1. Integration of a USB webcam for remote monitoring of your Target-HW setup.
-1. Provision of a virtual microSD card [**SDWire**](https://shop.3mdeb.com/shop/open-source-hardware/sdwire/) for trying out different images on the DUT.
-1. Control over the power ON/OFF functionality of the DUT.
-1. Measurement of power consumption of the DUT for monitoring purposes.
-1. FTP/TFTP server functionality for bootloaders to load images onto the RAM of the DUT(using Tasmota based XY-WFUSB dongle).
+1. Control over the power ON/OFF functionality of the DUT via PoE port power control.
+1. Measurement of power consumption of the DUT via PoE port power measurement future of Netgear PoE switch.
+1. FTP/TFTP server functionality for bootloaders to load images onto the RAM of the DUT.
 
 This comprehensive suite of features empowers engineers to efficiently manage and troubleshoot hardware remotely, enhancing productivity and flexibility in development processes.
 
@@ -46,18 +46,26 @@ This comprehensive suite of features empowers engineers to efficiently manage an
 | 14    | SDWire(SDCard-Mux)           | 1        | 90            | 90       | If your DUT boots from sdcard   | [Link](https://shop.3mdeb.com/shop/open-source-hardware/sdwire/) |
 
 ## Preparation of accessories
-As shown in the picture [**above**](https://github.com/hackboxguy/remote-kit?tab=readme-ov-file#setup-diagram-for-accessing-and-controlling-the-raspi-4-as-dut-over-the-network), prepare the setup with all accessories shown in the diagram(along with your pi-4-DUT), next step is...
+As shown in the picture [**above**](https://github.com/hackboxguy/remote-kit?tab=readme-ov-file#setup-diagram-for-accessing-and-controlling-the-raspi-4-as-dut-over-the-network), prepare the setup with all accessories and follow the steps below..
 1. Incase if you have a dhcp server on your corporate network, feel free to access Remote-Kit on the wan side using hostname **http://remote-kit-000**, else connect your Brower-PC to the 4th port of GS308EP PoE-Switch and it will be assigned an ip in the range of 192.168.20.x
 1. IP address list of all the devices assigned by Remote-Kit's OpenWRT can be viewed at **http://192.168.20.1** (root/remote-kit-000)
 1. Open webUI of GS308EP at: http://GS308EP/ (or check its ip on overview page of openwrt), Change default login password(```password```) of GS308EP(e.g **Remotekit000**)
 1. Download the [**PiKVM-Image**](https://files.pikvm.org/images/v3-hdmi-rpi4-box-latest.img.xz) and using [**Balena-Etcher**](https://etcher.balena.io/#download-etcher), prepare the sdcar and boot the PiKVM by connecting its ethernet to Port-2 of PoE-Switch.
 1. Connect **Nous-Smart-Socket** to the wifi of Remote-Kit at ssid: ```remote-kit-000``` and key: ```remote-kit-000```
 1. Connect **XY-WFUSB-Switch** to the wifi of Remote-Kit at ssid: ```remote-kit-000``` and key: ```remote-kit-000```
-1. Check if all accessories shows up on the overview page of Remote-Kit-OpenWRT.
+1. Check if all accessories shows up with their ip addresses on the overview page of Remote-Kit-OpenWRT.
 
 ## Preparation of Port-Forwarding for accessing various accessories on WAN-Side(corporate network)
+By default, Remote-Kit-Custom-Firmware of GL-MT300N-V2 includes following port forwarding rules so that accessories such as Camera/PiKVM/PoE-Switch/Nous-Smart-Socket/XY-WFUSB-SWITCH are accessible from the WAN side network of the GL-MT300N-V2 Pocket router, following are the ports accessible for different accessories
+ * OpenWRT Interface of Pocket-Router: **http://remote-kit-000:80/**
+ * Camera Stream is mapped at: **http://remote-kit-000:8080/**
+ * Netgear PoE switch's web interface is mapped at: **http://remote-kit-000:8081/**
+ * PiKVM's  webrtc interface is at: **https://remote-kit-000:4433/**
+ * Nous-Smart-Socket's tasmota interface is at: **https://remote-kit-000:8082/**
+ * XY-WFUSB's tasmota interface is at: **https://remote-kit-000:8083/**
+To make these ports to work, ip address of the port forwarding needs to be changed to the actual ip of the accessory, this can be done by clicking the edit button under OpenWRT interface-->Network-->Firewall-->Port Forwards.
 
-## Loading the first image to the sdcard of Pi-4-DUT
+## Remote Loading the first image to the sdcard of Pi-4-DUT
 As shown in the following commands, Libreelec image is downloaded to the usb-flash-drive(mounted as /dev/sda1 in Remote-Kit) and then Pi-4-DUT is powered down and then downloaded image is written to the micro-sdcard using SDWire's wrapper script ```sd-wire-load-image.sh```
 ```
 [me@my-pc ~]$ ssh root@remote-kit-000  #pw: remote-kit-000

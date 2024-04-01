@@ -23,5 +23,25 @@ This comprehensive suite of features empowers engineers to efficiently manage an
 1. After reboot, webUI of **GL-MT300N-V2** will be available at ip **192.168.20.1** on LAN interface side
 1. Userename and password for login page are ```root```/```remote-kit-000```(later change the pw to your own using openwrt-webUI)
 
-## Setup diagram for accessing and controlling the Device-Under-Test over the network
+## Setup diagram for accessing and controlling the RASPI-4-as-DUT over the network
 ![Hardware Setup Diagram.](/images/hw-setup-diagram.png "Hardware Setup Diagram.")
+
+## Bill-Of-Material for a setup of Pi-4 as DUT
+**Note: The list of items along with their respective models, prices, and online links provided in this table are from the the time when this was written. However, they are presented solely as a reference and may be subject to change in the future. It is advisable to conduct your own research and verify the current information before proceeding to build this setup.**
+| Sr.No | Item                         | Quantity | Unit-Price(€) | Price(€) | Remarks                         | Link                              |
+| ----- | ---------------------------- | -------- | ------------- | -------- | ------------------------------- | --------------------------------- |
+| 1     | GL.iNet GL-MT300N-V2 router  | 1        | 30            | 30       | None                            | [Link](https://amzn.eu/d/1pgoR1M) |
+| 2     | 5v MicroUSB PS(Pocket-router)| 1        | 10            | 10       | 5v/3A Adapter                   | [Link](https://amzn.eu/d/0a8NBs1) |
+| 3     | Netgear GS308EP PoE Switch   | 1        | 90            | 90       | Managed PoE Switch with Adapter | [Link](https://amzn.eu/d/cyDWo5L) |
+| 4     | 5v PoE Splitter(USB-C)       | 2        | 15            | 30       | With USB-C connector            | [Link](https://amzn.eu/d/01gzida) |
+| 5     | 3Port USB Hub                | 1        | 5             | 5        | Can work with any usb hub       | [Link](https://amzn.eu/d/4a37xgn) |
+| 6     | Highspeed USB drive(16GB)    | 1        | 10            | 10       | Depends on the image size of DUT| [Link](https://amzn.eu/d/fuQYOrf) |
+| 7     | Raspberry-Pi-4               | 2        | 50            | 100      | One for PiKVM and other as DUT  | [Link](https://amzn.eu/d/3ly0znl) |
+| 8     | MicroSD Card                 | 1        | 10            | 10       | 16GB or higher for PiKVM Image  | [Link](https://amzn.eu/d/e3RXCP2) |
+| 9     | Geekwork PiKVM kit           | 1        | 85            | 85       | Other PiKVM versions can be used| [Link](https://amzn.eu/d/fZf16v9) |
+| 10    | USB webcam                   | 1        | 70            | 70       | Any UVC supported USB webcam    | [Link](https://amzn.eu/d/in1wPjU) |
+| 11    | Tasmota Wifi Smart Socket    | 1        | 10            | 10       | Any wifi socket with tasmota-fmw| [Link](https://amzn.eu/d/a8AOq5A) |
+| 12    | USB to TTL Serial Adapter    | 1        | 15            | 15       | TTL Level depends on your DUT   | [Link](https://amzn.eu/d/fqhGfQL) |
+| 13    | Sinilink XY-WSUSB Dongle     | 1        | 8             | 8        | Must be flashed with tasmota    | [Link](https://www.ebay.de/itm/324256997915) |
+| 14    | SDWire(SDCard-Mux)           | 1        | 90            | 90       | If your DUT boots from sdcard   | [Link](https://shop.3mdeb.com/shop/open-source-hardware/sdwire/) |
+
